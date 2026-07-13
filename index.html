@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8">
 
 <title>Out Patient Department Dashboard</title>
@@ -109,6 +109,25 @@ button:hover{
 
 }
 
+@media (max-width:768px){
+
+.container{
+    padding:15px;
+}
+
+.count{
+    font-size:48px;
+}
+
+button{
+    font-size:18px;
+    padding:16px;
+}
+
+.total div{
+    font-size:60px;
+}
+
 </style>
 
 </head>
@@ -167,11 +186,31 @@ Add Patient
 
 </div>
 
+<div class="cards" style="margin-top:25px;">
+
+  <div class="card">
+      <h2>📅 Today's Patients</h2>
+      <div id="today" class="count">0</div>
+  </div>
+
+  <div class="card">
+      <h2>📈 This Week</h2>
+      <div id="week" class="count">0</div>
+  </div>
+
+  <div class="card">
+      <h2>📊 This Month</h2>
+      <div id="month" class="count">0</div>
+  </div>
+
+</div>
+
+
 </div>
 
 <script>
 
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbxvp2hLlS9II9q9sgvybJhQjDQ4kFel_oNXtjJ_GWmZuklqlLTF0E2QatkVw59mhRS8/exec";
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbwyktEiA5pYv0XRfxqmQ9TDy8nULnF0vfZ8L_rRbXvxuzXwCwnx9AWryv-1WxoZUFSQ/exec";
 
 loadDashboard();
 
@@ -218,6 +257,22 @@ document.getElementById("internal").textContent=data.internal;
 document.getElementById("total").textContent=data.total;
 
 }
+
+function updateDashboard(data){
+
+    document.getElementById("general").textContent = data.general;
+    document.getElementById("pediatrics").textContent = data.pediatrics;
+    document.getElementById("internal").textContent = data.internal;
+
+    document.getElementById("total").textContent = data.total;
+
+    document.getElementById("today").textContent = data.today;
+    document.getElementById("week").textContent = data.week;
+    document.getElementById("month").textContent = data.month;
+
+}
+
+setInterval(loadDashboard,10000);
 
 </script>
 
