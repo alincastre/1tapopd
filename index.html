@@ -111,5 +111,50 @@ document.getElementById("month").textContent=data.month ?? 0;
 
 setInterval(loadDashboard,10000);
 </script>
+  <script>
+  let isSaving = false;
+
+function save(department){
+
+    if(isSaving) return;
+
+    isSaving = true;
+
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.dataset.original = btn.innerHTML;
+        btn.innerHTML = "Saving...";
+    });
+
+    fetch(SCRIPT_URL,{
+        method:"POST",
+        body:JSON.stringify({
+            department:department
+        })
+    })
+    .then(res => res.json())
+    .then(updateDashboard)
+    .catch(err => {
+        console.error(err);
+        alert("Unable to save patient.");
+    })
+    .finally(() => {
+
+        setTimeout(() => {
+
+            buttons.forEach(btn => {
+                btn.disabled = false;
+                btn.innerHTML = btn.dataset.original;
+            });
+
+            isSaving = false;
+
+        }, 2000);
+
+    });
+
+}
+</script>
 </body>
 </html>
