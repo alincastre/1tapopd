@@ -1,280 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Out Patient Department Dashboard</title>
-
 <style>
-
-body{
-    margin:0;
-    font-family:Arial;
-    background:#f2f5f8;
+body{margin:0;font-family:Arial,sans-serif;background:#f2f5f8}
+.container{max-width:1100px;margin:auto;padding:20px}
+h1{text-align:center;color:#1565C0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card,.total{background:#fff;border-radius:15px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,.12);text-align:center}
+.count{font-size:56px;font-weight:bold;color:#4CAF50;margin:15px 0}
+button{width:100%;padding:16px;font-size:18px;background:#1976D2;color:#fff;border:none;border-radius:10px;cursor:pointer}
+button:hover{background:#125ea7}
+.total{margin-top:25px;background:#263238;color:#fff}
+.total .count{color:#fff}
+@media(max-width:768px){
+.container{padding:12px}
+.count{font-size:42px}
+button{font-size:16px}
 }
-
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:30px;
-}
-
-h1{
-    text-align:center;
-    color:#1565C0;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-}
-
-.card{
-
-    background:white;
-    border-radius:15px;
-    padding:25px;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-
-    text-align:center;
-
-}
-
-.count{
-
-    font-size:60px;
-    font-weight:bold;
-    color:#4CAF50;
-
-    margin:15px;
-
-}
-
-button{
-
-    width:100%;
-
-    padding:18px;
-
-    font-size:20px;
-
-    background:#1976D2;
-
-    color:white;
-
-    border:none;
-
-    border-radius:10px;
-
-    cursor:pointer;
-
-}
-
-button:hover{
-
-    background:#1565C0;
-
-}
-
-.total{
-
-    margin-top:30px;
-
-    background:#263238;
-
-    color:white;
-
-    border-radius:15px;
-
-    padding:25px;
-
-    text-align:center;
-
-}
-
-.total h2{
-
-    margin:0;
-
-}
-
-.total div{
-
-    font-size:80px;
-
-    font-weight:bold;
-
-}
-
-@media (max-width:768px){
-
-.container{
-    padding:15px;
-}
-
-.count{
-    font-size:48px;
-}
-
-button{
-    font-size:18px;
-    padding:16px;
-}
-
-.total div{
-    font-size:60px;
-}
-
 </style>
-
 </head>
-
 <body>
-
 <div class="container">
-
-<h1>Out Patient Department Dashboard</h1>
+<h1>OutPatient Department Dashboard</h1>
 
 <div class="cards">
-
 <div class="card">
-
-<h2>👨‍⚕️ General Doctor</h2>
-
+<h2>👨‍⚕️ General Physicians</h2>
 <div id="general" class="count">0</div>
-
-<button onclick="save('General Doctor')">
-Add Patient
-</button>
-
+<button onclick="save('General Doctor')">Add Patient</button>
 </div>
 
 <div class="card">
-
 <h2>👶 Pediatrics</h2>
-
 <div id="pediatrics" class="count">0</div>
-
-<button onclick="save('Pediatrics')">
-Add Patient
-</button>
-
+<button onclick="save('Pediatrics')">Add Patient</button>
 </div>
 
 <div class="card">
-
 <h2>🩺 Internal Medicine</h2>
-
 <div id="internal" class="count">0</div>
-
-<button onclick="save('Internal Medicine')">
-Add Patient
-</button>
-
+<button onclick="save('Internal Medicine')">Add Patient</button>
 </div>
-
 </div>
 
 <div class="total">
-
 <h2>Total Patients</h2>
-
-<div id="total">0</div>
-
+<div id="total" class="count">0</div>
 </div>
 
-<div class="cards" style="margin-top:25px;">
-
-  <div class="card">
-      <h2>📅 Today's Patients</h2>
-      <div id="today" class="count">0</div>
-  </div>
-
-  <div class="card">
-      <h2>📈 This Week</h2>
-      <div id="week" class="count">0</div>
-  </div>
-
-  <div class="card">
-      <h2>📊 This Month</h2>
-      <div id="month" class="count">0</div>
-  </div>
-
+<div class="cards" style="margin-top:20px">
+<div class="card">
+<h2>📅 Today's Patients</h2>
+<div id="today" class="count">0</div>
 </div>
 
+<div class="card">
+<h2>📈 This Week</h2>
+<div id="week" class="count">0</div>
+</div>
+
+<div class="card">
+<h2>📊 This Month</h2>
+<div id="month" class="count">0</div>
+</div>
+</div>
 
 </div>
 
 <script>
-
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbwyktEiA5pYv0XRfxqmQ9TDy8nULnF0vfZ8L_rRbXvxuzXwCwnx9AWryv-1WxoZUFSQ/exec";
 
 loadDashboard();
 
 function save(department){
-
 fetch(SCRIPT_URL,{
-
 method:"POST",
-
-body:JSON.stringify({
-
-department:department
-
+body:JSON.stringify({department:department})
 })
-
-})
-
-.then(res=>res.json())
-
+.then(r=>r.json())
 .then(updateDashboard)
-
-.catch(err=>alert(err));
-
+.catch(err=>{
+console.error(err);
+alert("Unable to connect to Apps Script.");
+});
 }
 
 function loadDashboard(){
-
 fetch(SCRIPT_URL)
-
-.then(res=>res.json())
-
-.then(updateDashboard);
-
+.then(r=>r.json())
+.then(updateDashboard)
+.catch(console.error);
 }
 
 function updateDashboard(data){
 
-document.getElementById("general").textContent=data.general;
+document.getElementById("general").textContent=data.general ?? 0;
+document.getElementById("pediatrics").textContent=data.pediatrics ?? 0;
+document.getElementById("internal").textContent=data.internal ?? 0;
 
-document.getElementById("pediatrics").textContent=data.pediatrics;
+document.getElementById("total").textContent=data.total ?? 0;
 
-document.getElementById("internal").textContent=data.internal;
-
-document.getElementById("total").textContent=data.total;
-
-}
-
-function updateDashboard(data){
-
-    document.getElementById("general").textContent = data.general;
-    document.getElementById("pediatrics").textContent = data.pediatrics;
-    document.getElementById("internal").textContent = data.internal;
-
-    document.getElementById("total").textContent = data.total;
-
-    document.getElementById("today").textContent = data.today;
-    document.getElementById("week").textContent = data.week;
-    document.getElementById("month").textContent = data.month;
+document.getElementById("today").textContent=data.today ?? 0;
+document.getElementById("week").textContent=data.week ?? 0;
+document.getElementById("month").textContent=data.month ?? 0;
 
 }
 
 setInterval(loadDashboard,10000);
-
 </script>
-
 </body>
 </html>
